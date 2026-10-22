@@ -102,6 +102,13 @@ public class TripPoint {
         return totalMinutes / 60.0;
     }
 
+    /**
+     * Computes the Haversine distance between two TripPoint objects.
+     * Accounts for Earth's curvature to find distances in kilometers.
+     * @param a the first TripPoint
+     * @param b the second TripPoint
+     * @return the distance in kilometers between the two points
+     */
     public static double haversineDistance(TripPoint a, TripPoint b) {
         final double RADIUS = 6371.0; // Radius of the Earth in kilometers
 
@@ -111,18 +118,41 @@ public class TripPoint {
         double lat2 = Math.toRadians(b.getLat());
         double lon2 = Math.toRadians(b.getLon());
 
-        // Calculate the differences
+        // Calculates the differences
         double dLat = lat2 - lat1;
         double dLon = lon2 - lon1;
 
-        // Apply the Haversine formula
+        // Applies the Haversine formula
         double aVal = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                       Math.cos(lat1) * Math.cos(lat2) *
                       Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
         double cTerm = 2 * Math.atan2(Math.sqrt(aVal), Math.sqrt(1 - aVal));
 
-        // Calculate the distance
+        // Calculates the distance
         return RADIUS * cTerm;
+    }
+
+    /**
+     * Calculates the total cumulative distance of the entire trip.
+     * Iterates through the trip log and sums up the distances between points.
+     * 
+     * @return the total distance traveled in kilometers.
+     */
+    public static double totalDistance() {
+        if (trip == null || trip.size() < 2) {
+            return 0.0;
+        }
+
+        double totalDistance = 0.0;
+
+        for (int i = 0; i < trip.size() - 1; i++){
+            TripPoint currentPoint = trip.get(i);
+            TripPoint nextPoint = trip.get(i + 1);
+
+            //Calls haversineDistance to calculate the distance between the current point and the next point
+            totalDistance += haversineDistance(currentPoint, nextPoint);
+        }
+        return totalDistance;
     }
 }
