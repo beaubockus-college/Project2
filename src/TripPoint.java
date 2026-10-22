@@ -54,6 +54,12 @@ public class TripPoint {
         return new ArrayList<>(trip);
     }
 
+    /**
+     * Reads trip data from a CSV file and populates the trip ArrayList.
+     * Each line of valid data is converted into a TripPoint object.
+     * 
+     * @param filename The name of the CSV file to read.
+     */
     public static void readFile(String filename) {
         trip.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -69,5 +75,30 @@ public class TripPoint {
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
+    }
+
+    /**
+     * Calculates the total elapsed time of the trip.
+     * Converts the tracked minutes into hours
+     * 
+     * @return the total trip duration in hours, or 0.0 if the trip has no data.
+     */
+    public static double totalTime() {
+        // If there are fewer than two points, no time has passed.
+        if (trip == null || trip.size() < 2) {
+            return 0.0;
+        }
+        
+        // Get the time from the first point in the CSV
+        int startTime = trip.get(0).getTime();
+        
+        // Get the time from the very last point in the CSV
+        int endTime = trip.get(trip.size() - 1).getTime();
+        
+        // Calculate the difference in minutes
+        int totalMinutes = endTime - startTime;
+        
+        // Convert to hours using 60.0.
+        return totalMinutes / 60.0;
     }
 }
