@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
 
 /**
  * Represents a single GPS data point from the trip log,
@@ -49,5 +52,22 @@ public class TripPoint {
      */
     public static ArrayList<TripPoint> getTrip() {
         return new ArrayList<>(trip);
+    }
+
+    public static void readFile(String filename) {
+        trip.clear();
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            br.readLine(); // Skips header
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                int time = Integer.parseInt(parts[0]);
+                double lat = Double.parseDouble(parts[1]);
+                double lon = Double.parseDouble(parts[2]);
+                trip.add(new TripPoint(time, lat, lon));
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 }
