@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.io.BufferedReader;
 
 /**
+ * Project 2: TripPoint.java
+ * 
  * Represents a single GPS data point from the trip log,
  * including the time, latitude, and longitude.
- * TripPoint
+ * 
+ * @author Beau Bockus
+ * @version 1.0?
  */
 public class TripPoint {
     private int time;
