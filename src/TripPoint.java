@@ -6,4 +6,10 @@ public class TripPoint {
     private double lon;
     
     private static ArrayList<TripPoint> trip = new ArrayList<TripPoint>();
+
+    public TripPoint(int time, double lat, double lon) {
+        this.time = time;
+        this.lat = lat;
+        this.lon = lon;
+    }
 }
