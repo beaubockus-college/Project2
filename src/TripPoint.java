@@ -101,4 +101,28 @@ public class TripPoint {
         // Convert to hours using 60.0.
         return totalMinutes / 60.0;
     }
+
+    public static double haversineDistance(TripPoint a, TripPoint b) {
+        final double RADIUS = 6371.0; // Radius of the Earth in kilometers
+
+        // Convert latitude and longitude from degrees to radians
+        double lat1 = Math.toRadians(a.getLat());
+        double lon1 = Math.toRadians(a.getLon());
+        double lat2 = Math.toRadians(b.getLat());
+        double lon2 = Math.toRadians(b.getLon());
+
+        // Calculate the differences
+        double dLat = lat2 - lat1;
+        double dLon = lon2 - lon1;
+
+        // Apply the Haversine formula
+        double aVal = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1) * Math.cos(lat2) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double cTerm = 2 * Math.atan2(Math.sqrt(aVal), Math.sqrt(1 - aVal));
+
+        // Calculate the distance
+        return RADIUS * cTerm;
+    }
 }
