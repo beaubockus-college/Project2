@@ -155,4 +155,24 @@ public class TripPoint {
         }
         return totalDistance;
     }
+
+    /**
+     * Calculates the average speed between two trip points in km/h.
+     * 
+     * @param a the first TripPoint
+     * @param b the second TripPoint
+     * @return the average speed in km/h, or 0.0 if time = 0.
+     */
+    public static double avgSpeed(TripPoint a, TripPoint b) {
+        double distance = haversineDistance(a,b);
+        int timeDiffMinutes = Math.abs(a.getTime() - b.getTime());
+
+        if (timeDiffMinutes == 0) {
+            return 0.0; // Avoids division by zero
+        }
+
+        double timeDiffHours = timeDiffMinutes / 60.0;
+        return distance / timeDiffHours;
+
+    }
 }
